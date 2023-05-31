@@ -75,7 +75,7 @@ var moduleName = "wordle_js";
 var matchInit = function (ctx, logger, nk, params) {
     return {
         state: { presences: {}, emptyTicks: 0 },
-        tickRate: 1,
+        tickRate: 20,
         label: ''
     };
 };
@@ -96,13 +96,17 @@ var matchLeave = function (ctx, logger, nk, dispatcher, tick, state, presences) 
     };
 };
 var matchLoop = function (ctx, logger, nk, dispatcher, tick, state, messages) {
-    // If we have no presences in the match according to the match state, increment the empty ticks count
-    if (state.presences.length === 0) {
-        state.emptyTicks++;
-    }
-    // If the match has been empty for more than 100 ticks, end the match by returning null
-    if (state.emptyTicks > 100) {
-        return null;
+    // // If we have no presences in the match according to the match state, increment the empty ticks count
+    // if (state.presences.length === 0) {
+    //   state.emptyTicks++;
+    // }
+    // // If the match has been empty for more than 100 ticks, end the match by returning null
+    // if (state.emptyTicks > 100) {
+    //   return null;
+    // }
+    for (var _i = 0, messages_1 = messages; _i < messages_1.length; _i++) {
+        var message = messages_1[_i];
+        dispatcher.broadcastMessage(4, message.data);
     }
     return {
         state: state
