@@ -15,6 +15,15 @@
 var rpcIdFindMatch = 'find_match';
 function InitModule(ctx, logger, nk, initializer) {
     initializer.registerRpc(rpcIdFindMatch, rpcFindMatch);
+    initializer.registerMatch(moduleName, {
+        matchInit: matchInit,
+        matchJoinAttempt: matchJoinAttempt,
+        matchJoin: matchJoin,
+        matchLeave: matchLeave,
+        matchLoop: matchLoop,
+        matchTerminate: matchTerminate,
+        matchSignal: matchSignal,
+    });
     logger.info('JavaScript logic loaded.');
 }
 // Copyright 2020 The Nakama Authors
@@ -34,21 +43,10 @@ var rpcFindMatch = function (ctx, logger, nk, payload) {
     if (!ctx.userId) {
         throw Error('No user ID in context');
     }
-    if (!payload) {
-        throw Error('Expects payload.');
-    }
-    var request = {};
-    try {
-        request = JSON.parse(payload);
-    }
-    catch (error) {
-        logger.error('Error parsing json message: %q', error);
-        throw error;
-    }
     var matches;
     try {
-        var query = "+label.open:1 +label.fast:0";
-        matches = nk.matchList(10, true, null, null, 1, query);
+        //const query = `+label.open:1`;
+        matches = nk.matchList(10, true, null, null, 1);
     }
     catch (error) {
         logger.error('Error listing matches: %v', error);
@@ -62,7 +60,8 @@ var rpcFindMatch = function (ctx, logger, nk, payload) {
     else {
         // No available matches found, create a new one.
         try {
-            matchIds.push(nk.matchCreate("Daniel"));
+            matchIds.push(nk.matchCreate(moduleName));
+            logger.info("Created new Match");
         }
         catch (error) {
             logger.error('Error creating match: %v', error);
@@ -71,4 +70,76 @@ var rpcFindMatch = function (ctx, logger, nk, payload) {
     }
     var res = { matchIds: matchIds };
     return JSON.stringify(res);
+};
+var moduleName = "wordle_js";
+var matchInit = function (ctx, logger, nk, params) {
+    return {
+        state: { presences: {}, emptyTicks: 0 },
+        tickRate: 1,
+        label: ''
+    };
+};
+var matchJoin = function (ctx, logger, nk, dispatcher, tick, state, presences) {
+    presences.forEach(function (p) {
+        state.presences[p.sessionId] = p;
+    });
+    return {
+        state: state
+    };
+};
+var matchLeave = function (ctx, logger, nk, dispatcher, tick, state, presences) {
+    presences.forEach(function (p) {
+        delete (state.presences[p.sessionId]);
+    });
+    return {
+        state: state
+    };
+};
+var matchLoop = function (ctx, logger, nk, dispatcher, tick, state, messages) {
+    // If we have no presences in the match according to the match state, increment the empty ticks count
+    if (state.presences.length === 0) {
+        state.emptyTicks++;
+    }
+    // If the match has been empty for more than 100 ticks, end the match by returning null
+    if (state.emptyTicks > 100) {
+        return null;
+    }
+    return {
+        state: state
+    };
+};
+var matchJoinAttempt = function (ctx, logger, nk, dispatcher, tick, state, presence, metadata) {
+    logger.debug('%q attempted to join Lobby match', ctx.userId);
+    return {
+        state: state,
+        accept: true
+    };
+};
+// const matchJoin = function (ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher, tick: number, state: nkruntime.MatchState, presences: nkruntime.Presence[]) : { state: nkruntime.MatchState } | null {
+// 	presences.forEach(function (presence) {
+//         logger.debug('!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!');
+//         logger.debug('%q j!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!', presence.username.length);
+//         logger.debug('%q j!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!', presence.sessionId.length);
+//         logger.debug('%q j!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!', presence.userId.length);
+// 	  state.presences[presence.userId] = presence;
+// 	  logger.debug('%q joined Lobby match', presence.userId);
+// 	});
+// 	return {
+// 	  state
+// 	};
+//   }
+// let matchLeave = function(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher, tick: number, state: nkruntime.MatchState, presences: nkruntime.Presence[]) {
+//     return {state};
+// }
+// let matchLoop = function(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher, tick: number, state: nkruntime.MatchState, messages: nkruntime.MatchMessage[]) {
+//     //logger.debug('Lobby match loop executed');
+// 	return {
+// 	  state
+// 	};
+// }
+var matchTerminate = function (ctx, logger, nk, dispatcher, tick, state, graceSeconds) {
+    return { state: state };
+};
+var matchSignal = function (ctx, logger, nk, dispatcher, tick, state) {
+    return { state: state };
 };

@@ -17,6 +17,14 @@ const rpcIdFindMatch = 'find_match';
 function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, initializer: nkruntime.Initializer) {
 
     initializer.registerRpc(rpcIdFindMatch, rpcFindMatch);
-
+    initializer.registerMatch(moduleName, {
+        matchInit: matchInit,
+        matchJoinAttempt: matchJoinAttempt,
+        matchJoin: matchJoin,
+        matchLeave: matchLeave,
+        matchLoop: matchLoop,
+        matchTerminate: matchTerminate,
+        matchSignal: matchSignal,
+    });
     logger.info('JavaScript logic loaded.');
 }

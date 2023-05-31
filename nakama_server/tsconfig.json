@@ -1,7 +1,8 @@
 {
     "files": [
       "./main.ts",
-      "./match_rpc.ts"
+      "./match_rpc.ts",
+      "./match_handler.ts"
     ],
     "compilerOptions": {
       "target": "es5",
