@@ -161,7 +161,6 @@ const animateCSS = (element, animation, prefix = "animate__") =>
   });
 
 document.addEventListener("keyup", (e) => {
-  Nakama.makeMove(e);
   if (guessesRemaining === 0) {
     return;
   }
@@ -182,6 +181,7 @@ document.addEventListener("keyup", (e) => {
     return;
   } else {
     insertLetter(pressedKey);
+    Nakama.makeMove(e);
   }
 });
 
@@ -192,13 +192,10 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
     return;
   }
   let key = target.textContent;
-
-  if (key == "Join") {
-    Nakama.findMatch();
-  }
   
   if (key == "Begin") {
-    Nakama.createMatch();
+    Nakama.findMatch();
+    return;
   }
 
   if (key === "Del") {
