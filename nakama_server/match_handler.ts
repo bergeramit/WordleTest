@@ -3,7 +3,7 @@ const moduleName = "wordle_js";
 const matchInit = function (ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, params: {[key: string]: string}): {state: nkruntime.MatchState, tickRate: number, label: string} {
     return {
       state: { presences: {}, emptyTicks: 0 },
-      tickRate: 1, // 1 tick per second = 1 MatchLoop func invocations per second
+      tickRate: 20, // 1 tick per second = 1 MatchLoop func invocations per second
       label: ''
     };
   };
@@ -29,14 +29,18 @@ const matchInit = function (ctx: nkruntime.Context, logger: nkruntime.Logger, nk
   }
   
   const matchLoop = function (ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher, tick: number, state: nkruntime.MatchState, messages: nkruntime.MatchMessage[]) : { state: nkruntime.MatchState} | null {
-    // If we have no presences in the match according to the match state, increment the empty ticks count
-    if (state.presences.length === 0) {
-      state.emptyTicks++;
-    }
+    // // If we have no presences in the match according to the match state, increment the empty ticks count
+    // if (state.presences.length === 0) {
+    //   state.emptyTicks++;
+    // }
   
-    // If the match has been empty for more than 100 ticks, end the match by returning null
-    if (state.emptyTicks > 100) {
-      return null;
+    // // If the match has been empty for more than 100 ticks, end the match by returning null
+    // if (state.emptyTicks > 100) {
+    //   return null;
+    // }
+
+    for (const message of messages) {
+        dispatcher.broadcastMessage(4, message.data);
     }
   
     return {
