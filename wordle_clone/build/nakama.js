@@ -41,15 +41,8 @@ class Nakama {
         console.log("Matched Joined! MatchId: " + this.matchID);
     }
 
-    // async createMatch() { // ep4
-    //     var match = await this.socket.createMatch();
-    //     //this.matchID = matches.payload.matchIds[0]
-    //     //await this.socket.joinMatch(this.matchID);
-    //     console.log("Matched Created! MatchId: " + match.match_id);
-    // }
-
     async makeMove(key_msg) { // ep4
-        await this.socket.sendMatchState(this.matchID, 4, JSON.stringify(key_msg));
+        await this.socket.sendMatchState(this.matchID, 1, JSON.stringify(key_msg));
         console.log("Match data sent")
     }
 }

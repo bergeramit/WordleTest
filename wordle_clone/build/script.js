@@ -194,6 +194,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   let key = target.textContent;
   
   if (key == "Begin") {
+    createSocket();
     Nakama.findMatch();
     return;
   }
@@ -204,5 +205,15 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 
   document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
 });
+
+function createSocket() {
+  Nakama.socket.onmatchdata = (result) => {
+    const json_string = new TextDecoder().decode(result.data)
+    const json = json_string ? JSON.parse(json_string): ""
+    console.log("Match Changes: "+json);
+  
+    //document.dispatchEvent(new KeyboardEvent("keyup", { key: json }));
+  };
+}
 
 initBoard();
