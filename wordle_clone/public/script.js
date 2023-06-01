@@ -204,7 +204,8 @@ function handle_key_entered(pressedKey, is_local) {
 }
 
 function match_guess_target_callback(match_id) {
-  rightGuessString = WORDS[Math.floor(seedrandom(match_id)() * WORDS.length)];
+  var date = new Date();
+  rightGuessString = WORDS[Math.floor(seedrandom(match_id + date.getHours().toString() + date.getMinutes().toString())() * WORDS.length)];
   console.log("Match's Word: "+rightGuessString);
 }
 
