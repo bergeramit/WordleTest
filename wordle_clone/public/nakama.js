@@ -1,5 +1,3 @@
-//import { Client } from "@heroiclabs/nakama-js";
-//import { v4 as uuid } from 'uuid';
 import { Client } from "https://cdn.skypack.dev/@heroiclabs/nakama-js";
 import { v4 as uuid } from "https://cdn.skypack.dev/@lukeed/uuid";
 
