@@ -6,7 +6,7 @@ const NUMBER_OF_GUESSES = 3; // 3 per user
 const TOTAL_ROWS = 6; // total rows
 let rightGuessString;
 
-// console.log(rightGuessString);
+toastr.options.timeOut = 500;
 
 class playerState {
   constructor(nextLetter) {
