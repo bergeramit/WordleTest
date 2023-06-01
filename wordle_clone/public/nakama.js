@@ -1,5 +1,7 @@
-import { Client } from "@heroiclabs/nakama-js";
-import { v4 as uuid } from 'uuid';
+//import { Client } from "@heroiclabs/nakama-js";
+//import { v4 as uuid } from 'uuid';
+import { Client } from "https://cdn.skypack.dev/@heroiclabs/nakama-js";
+import { v4 as uuid } from "https://cdn.skypack.dev/@lukeed/uuid";
 
 class Nakama {
     constructor() {
@@ -10,7 +12,7 @@ class Nakama {
     }
 
     async authenticate() {
-        this.client = new Client("defaultkey", "localhost", "7350");
+        this.client = new Client("defaultkey", "64.226.100.123", "7350");
         this.client.ssl = false;
 
         let deviceId = uuid();
