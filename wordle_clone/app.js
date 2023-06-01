@@ -11,6 +11,11 @@ app.get('/script.js', function(req, res){
     res.sendFile(__dirname + '/public/script.js');
 });
 
+app.get('/favicon.ico', function(req, res){
+    res.sendFile(__dirname + '/assets/favicon.ico');
+});
+
+
 app.get('/words.js', function(req, res){
     res.sendFile(__dirname + '/public/words.js');
 });
