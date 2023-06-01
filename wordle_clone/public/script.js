@@ -181,7 +181,7 @@ function handle_key_entered(pressedKey) {
 
 document.addEventListener("keyup", (e) => {
   let pressedKey = String(e.key);
-  Nakama.makeMove(pressedKey);
+  Nakama.makeMove(pressedKey, handle_key_entered);
 });
 
 document.getElementById("keyboard-cont").addEventListener("click", (e) => {
@@ -193,7 +193,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   let key = target.textContent;
   
   if (key == "Connect") {
-    createSocket();
+    Nakama.createSocket(handle_key_entered);
     Nakama.findMatch();
     return;
   }
@@ -204,18 +204,5 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 
   document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
 });
-
-function createSocket() {
-  Nakama.socket.onmatchdata = (result) => {
-    //console.log("Results: "+result.data);
-    const json_string = new TextDecoder().decode(result.data)
-    //console.log("json_string: "+json_string);
-    const json = json_string ? JSON.parse(json_string): ""
-    console.log("Got key: "+json.key);
-    handle_key_entered(json.key);
-  
-    //document.dispatchEvent(new KeyboardEvent("keyup", { key: json }));
-  };
-}
 
 initBoard();
