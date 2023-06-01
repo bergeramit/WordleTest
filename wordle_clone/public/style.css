@@ -50,9 +50,12 @@ h1 {
 }
 
 .keyboard-button {
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
-  padding: 0.5rem;
+  padding-top: 0.5rem;
+  padding-right: 0.2rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.2rem;
   margin: 0 2px;
   cursor: pointer;
   text-transform: uppercase;
