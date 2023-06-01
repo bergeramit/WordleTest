@@ -1,11 +1,12 @@
+import seedrandom from 'https://cdn.jsdelivr.net/npm/seedrandom@3.0.5/+esm'
 import { WORDS } from "./words.js";
 import Nakama from "./nakama.js";
 
 const NUMBER_OF_GUESSES = 3; // 3 per user
 const TOTAL_ROWS = 6; // total rows
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+let rightGuessString;
 
-console.log(rightGuessString);
+// console.log(rightGuessString);
 
 class playerState {
   constructor(nextLetter) {
@@ -202,6 +203,11 @@ function handle_key_entered(pressedKey, is_local) {
   }
 }
 
+function match_guess_target_callback(match_id) {
+  rightGuessString = WORDS[Math.floor(seedrandom(match_id)() * WORDS.length)];
+  console.log("Match's Word: "+rightGuessString);
+}
+
 document.addEventListener("keyup", (e) => {
   let pressedKey = String(e.key);
   Nakama.makeMove(pressedKey, handle_key_entered);
@@ -217,7 +223,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   
   if (key == "Connect") {
     Nakama.createSocket(handle_key_entered);
-    Nakama.findMatch();
+    Nakama.findMatch(match_guess_target_callback);
     return;
   }
 

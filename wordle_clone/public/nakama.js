@@ -34,7 +34,7 @@ class Nakama {
 
     }
 
-    async findMatch() { // ep4 or create!
+    async findMatch(match_guess_target_callback) { // ep4 or create!
         const rpcid = "find_match";
         const matches = await this.client.rpc(this.session, rpcid, {});
 
@@ -43,6 +43,7 @@ class Nakama {
         console.log("Matched Joined! MatchId: " + this.matchID);
         toastr.success("Connected!");
         this.match_connected = true;
+        match_guess_target_callback(this.matchID);
     }
 
     async makeMove(key_msg, callback) { // ep4
