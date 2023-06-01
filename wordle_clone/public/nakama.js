@@ -49,7 +49,7 @@ class Nakama {
         if (this.match_connected == false) {
             toastr.error("Connect first!");
         } else {
-            callback(key_msg);
+            callback(key_msg, true);
             await this.socket.sendMatchState(this.matchID, 1, JSON.stringify({"key": key_msg, "user_id": this.session.user_id}));
             console.log("Match data sent");
         }
@@ -63,7 +63,7 @@ class Nakama {
           const json = json_string ? JSON.parse(json_string): ""
           console.log("Got key: "+json.key);
           if (json.user_id != this.session.user_id) {
-            callback(json.key);
+            callback(json.key, false);
             //document.dispatchEvent(new KeyboardEvent("keyup", { key: json }))
           }
         };

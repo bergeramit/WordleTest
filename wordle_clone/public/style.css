@@ -28,8 +28,14 @@ h1 {
   border: 2px solid black;
 }
 
-.letter-row {
+.letter-row-local {
   display: flex;
+}
+
+.letter-row-opponent {
+  display: flex;
+  color: black;
+  background-color: antiquewhite;
 }
 
 #keyboard-cont {

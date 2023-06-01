@@ -1,20 +1,33 @@
 import { WORDS } from "./words.js";
 import Nakama from "./nakama.js";
 
-const NUMBER_OF_GUESSES = 6;
-let guessesRemaining = NUMBER_OF_GUESSES;
-let currentGuess = [];
-let nextLetter = 0;
+const NUMBER_OF_GUESSES = 3; // 3 per user
+const TOTAL_ROWS = 6; // total rows
 let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
 
 console.log(rightGuessString);
 
+class playerState {
+  constructor(nextLetter) {
+    this.nextLetter = nextLetter;
+    this.guessesRemaining = NUMBER_OF_GUESSES;
+    this.currentGuess = [];
+  }
+}
+
+let player_local = new playerState(0);
+let player_remote = new playerState(0);
+
 function initBoard() {
   let board = document.getElementById("game-board");
 
-  for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
+  for (let i = 0; i < TOTAL_ROWS; i++) {
     let row = document.createElement("div");
-    row.className = "letter-row";
+    if (i < 3) {
+      row.className = "letter-row-local";
+    } else {
+      row.className = "letter-row-opponent";
+    }
 
     for (let j = 0; j < 5; j++) {
       let box = document.createElement("div");
@@ -45,21 +58,30 @@ function shadeKeyBoard(letter, color) {
   }
 }
 
-function deleteLetter() {
-  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
-  let box = row.children[nextLetter - 1];
-  box.textContent = "";
-  box.classList.remove("filled-box");
-  currentGuess.pop();
-  nextLetter -= 1;
+function get_row_and_player(is_local) {
+  if (is_local) {
+    // top 3 rows
+    return [document.getElementsByClassName("letter-row-local")[3 - player_local.guessesRemaining], player_local];
+  } else {
+    return [document.getElementsByClassName("letter-row-opponent")[3 - player_remote.guessesRemaining], player_remote];
+  }
 }
 
-function checkGuess() {
-  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
+function deleteLetter(is_local) {
+  let [row, player] = get_row_and_player(is_local);
+  let box = row.children[player.nextLetter - 1];
+  box.textContent = "";
+  box.classList.remove("filled-box");
+  player.currentGuess.pop();
+  player.nextLetter -= 1;
+}
+
+function checkGuess(is_local) {
+  let [row, player] = get_row_and_player(is_local);
   let guessString = "";
   let rightGuess = Array.from(rightGuessString);
 
-  for (const val of currentGuess) {
+  for (const val of player.currentGuess) {
     guessString += val;
   }
 
@@ -77,7 +99,7 @@ function checkGuess() {
 
   //check green
   for (let i = 0; i < 5; i++) {
-    if (rightGuess[i] == currentGuess[i]) {
+    if (rightGuess[i] == player.currentGuess[i]) {
       letterColor[i] = "green";
       rightGuess[i] = "#";
     }
@@ -90,7 +112,7 @@ function checkGuess() {
 
     //checking right letters
     for (let j = 0; j < 5; j++) {
-      if (rightGuess[j] == currentGuess[i]) {
+      if (rightGuess[j] == player.currentGuess[i]) {
         letterColor[i] = "yellow";
         rightGuess[j] = "#";
       }
@@ -111,33 +133,33 @@ function checkGuess() {
 
   if (guessString === rightGuessString) {
     toastr.success("You guessed right! Game over!");
-    guessesRemaining = 0;
+    player.guessesRemaining = 0;
     return;
   } else {
-    guessesRemaining -= 1;
-    currentGuess = [];
-    nextLetter = 0;
+    player.guessesRemaining -= 1;
+    player.currentGuess = [];
+    player.nextLetter = 0;
 
-    if (guessesRemaining === 0) {
+    if (player.guessesRemaining === 0) {
       toastr.error("You've run out of guesses! Game over!");
       toastr.info(`The right word was: "${rightGuessString}"`);
     }
   }
 }
 
-function insertLetter(pressedKey) {
-  if (nextLetter === 5) {
+function insertLetter(pressedKey, is_local) {
+  let [row, player] = get_row_and_player(is_local);
+  if (player.nextLetter === 5) {
     return;
   }
   pressedKey = pressedKey.toLowerCase();
 
-  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
-  let box = row.children[nextLetter];
+  let box = row.children[player.nextLetter];
   animateCSS(box, "pulse");
   box.textContent = pressedKey;
   box.classList.add("filled-box");
-  currentGuess.push(pressedKey);
-  nextLetter += 1;
+  player.currentGuess.push(pressedKey);
+  player.nextLetter += 1;
 }
 
 const animateCSS = (element, animation, prefix = "animate__") =>
@@ -160,14 +182,15 @@ const animateCSS = (element, animation, prefix = "animate__") =>
     node.addEventListener("animationend", handleAnimationEnd, { once: true });
   });
 
-function handle_key_entered(pressedKey) {
-  if (pressedKey === "Backspace" && nextLetter !== 0) {
-    deleteLetter();
+function handle_key_entered(pressedKey, is_local) {
+  let [row, player] = get_row_and_player(is_local);
+  if (pressedKey === "Backspace" && player.nextLetter !== 0) {
+    deleteLetter(is_local);
     return;
   }
 
   if (pressedKey === "Enter") {
-    checkGuess();
+    checkGuess(is_local);
     return;
   }
 
@@ -175,7 +198,7 @@ function handle_key_entered(pressedKey) {
   if (!found || found.length > 1) {
     return;
   } else {
-    insertLetter(pressedKey);
+    insertLetter(pressedKey, is_local);
   }
 }
 
