@@ -1,5 +1,7 @@
 h1 {
  text-align: center;
+  margin-block-start: 0.5em;
+   margin-block-end: 0.5em;
 }
 
 #game-board {
@@ -50,13 +52,28 @@ h1 {
 }
 
 .keyboard-button {
+  border: 1px solid black;
+  color:black;
   font-size: 1rem;
   font-weight: 700;
-  padding-top: 0.5rem;
-  padding-right: 0.2rem;
-  padding-bottom: 0.5rem;
-  padding-left: 0.2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
   margin: 0 2px;
   cursor: pointer;
   text-transform: uppercase;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
+
+#connect_button {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+
+body {
+  touch-action: manipulation;
+  }

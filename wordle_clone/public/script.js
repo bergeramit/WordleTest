@@ -192,7 +192,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   }
   let key = target.textContent;
   
-  if (key == "Begin") {
+  if (key == "Connect") {
     createSocket();
     Nakama.findMatch();
     return;
