@@ -2,7 +2,10 @@ const cors = require('cors');
 const express = require("express"); 
 const path = require('path');
 const bodyParser = require('body-parser');
+const guesser = require("./public/bot_guess_algo.js");
 const app = express(); // Initializing Express App
+
+
 app.use(bodyParser.json());
 app.use(cors({
 	origin: '*',
@@ -14,10 +17,11 @@ app.get("/", (req, res) => {
 });
 
 app.post('/bot/guess', function(req, res) {
-    const guess = req.body.guess;
+    const guess = req.body.input;
     const level = req.body.level;
+
     res.send({
-      'guess': "test",
+      'guess': guesser.make_guess(guess, level-1),
     });
   });
 

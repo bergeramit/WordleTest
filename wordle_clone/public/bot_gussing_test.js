@@ -2,6 +2,7 @@ var inputValues = [];
 var inputLength = 0;
 var wordFreqDict;
 var postURL = "http://64.226.100.123/bot/guess";
+//var postURL = "http://127.0.0.1:3000/bot/guess";
 
 // fs.readFile("unigram_freq.json", "utf8", (err, jsonString) => {
 //     if (err) {
@@ -52,24 +53,21 @@ function createInputBoxes() {
     }
     var input = inputValues.join("");
     fetch(postURL, {
-        mode: "no-cors",
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            "Access-Control-Allow-Origin": "http://127.0.0.1/", //or the specific origin you want to give access to,
+            "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true
         }, 
         body: JSON.stringify({input: input, level: botLevel})
-      }).then((res) => {
-        console.log("Request complete! response:", res.json());
-      });
-    // var guesses = get_guesses(input, botLevel);
-    // const stringList = document.getElementById("string-list");
-
-    // guesses.forEach((str) => {
-    //     const listItem = document.createElement("li");
-    //     listItem.textContent = str;
-    //     stringList.appendChild(listItem);
-    // });
+      }).then(response => {
+        console.log(response.statusText);
+        return response.json();
+    })
+    .then(data => {
+            console.log(data.guess);
+            const botGuess = document.getElementById("bot-guess");
+            botGuess.innerHTML = data.guess;
+        })
   }
