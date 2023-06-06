@@ -1,11 +1,20 @@
 const express = require("express"); 
 const path = require('path');
+const bodyParser = require('body-parser');
 const app = express(); // Initializing Express App
-
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
+
+app.post('/bot/guess', function(req, res) {
+    const guess = req.body.guess;
+    const level = req.body.level;
+    res.send({
+      'guess': "test",
+    });
+  });
 
 app.get('/script.js', function(req, res){
     res.sendFile(__dirname + '/public/script.js');

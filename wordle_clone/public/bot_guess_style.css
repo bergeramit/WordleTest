@@ -1,0 +1,31 @@
+
+input[type="text"] {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    margin: 5px;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  input[type="number"], button {
+    margin: 10px;
+  }
+  
+  #input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  input,textarea{width: 40px;
+    height: 20px;
+    text-align: center;
+    margin: 5px;}

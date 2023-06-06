@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Togethordle</title>
+    <link rel="stylesheet" href="bot_guess_style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+</head>
+<body>
+    <h1> Test Our Wordle Bot </h1>
+
+    <!DOCTYPE html>
+    <div>
+    <label for="quantity">Enter Words Size:</label>
+    <input type="number" id="quantity" min="1" max="12">
+  </div>
+  
+  <div>
+    <label for="quantity">Enter Bot Level (1-bad, 10-pro):</label>
+    <input type="number" id="bot_level" min="1" max="10">
+  </div>
+  
+  <button onclick="createInputBoxes()">Create</button>
+  <div id="input-container"></div>
+
+  <div id="try-to-guess"></div>
+
+  <ul id="string-list"></ul>
+
+<script src="bot_gussing_test.js"></script>
+</body>
+</html>
