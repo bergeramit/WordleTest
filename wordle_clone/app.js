@@ -29,8 +29,16 @@ app.get('/script.js', function(req, res){
     res.sendFile(__dirname + '/public/script.js');
 });
 
-app.get('/welcome.html', function(req, res){
-    res.sendFile(__dirname + '/public/welcome.html');
+app.get('/test_bot.html', function(req, res){
+    res.sendFile(__dirname + '/public/test_bot.html');
+});
+
+app.get('/bot_guessing_test.js', function(req, res){
+    res.sendFile(__dirname + '/public/bot_guessing_test.js');
+});
+
+app.get('/bot_guess_style.css', function(req, res){
+    res.sendFile(__dirname + '/public/bot_guess_style.css');
 });
 
 app.get('/favicon.ico', function(req, res){
