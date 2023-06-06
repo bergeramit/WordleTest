@@ -33,7 +33,7 @@ function createInputBoxes() {
     }
 
     const inputBox = document.createElement("Button");
-    inputBox.innerHTML = "Submit";
+    inputBox.innerHTML = "Guess";
     inputBox.onclick = bot_guess;
     tryButtonContainer.appendChild(inputBox);
   }
@@ -60,7 +60,7 @@ function createInputBoxes() {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true
         }, 
-        body: JSON.stringify({input: input, level: botLevel})
+        body: JSON.stringify({input: input.toLowerCase(), level: botLevel})
       }).then(response => {
         console.log(response.statusText);
         return response.json();

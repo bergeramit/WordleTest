@@ -15,7 +15,7 @@ function make_guess(input, level) {
     var filtered = filterWordsByPattern(wordFreqDict, input);
     if (filtered.length == 0) {
         return "No Word Exist!";
-    } else if (filtered.length <= level) {
+    } else if (filtered.length <= level ) {
         return filtered[filtered.length-1].word;
     }
     return filtered[level].word;
