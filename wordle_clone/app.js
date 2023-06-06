@@ -29,6 +29,10 @@ app.get('/script.js', function(req, res){
     res.sendFile(__dirname + '/public/script.js');
 });
 
+app.get('/welcome.html', function(req, res){
+    res.sendFile(__dirname + '/public/welcome.html');
+});
+
 app.get('/favicon.ico', function(req, res){
     res.sendFile(__dirname + '/assets/favicon.ico');
 });
