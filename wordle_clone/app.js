@@ -1,8 +1,13 @@
+const cors = require('cors');
 const express = require("express"); 
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express(); // Initializing Express App
 app.use(bodyParser.json());
+app.use(cors({
+	origin: '*',
+	methods: ['GET', 'POST']
+}));
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
