@@ -19,7 +19,24 @@ const buttons = document.querySelectorAll('.pagination a');
 
 function paint_current_level(current_level) {
     level = current_level;
+    letters = Array.from(level[0]);
+    console.log(level);
+    let board = document.getElementById("game-board");
+    board.innerHTML = "";
     
+    for (let i = 0; i < level.length; i++) {
+        let row = document.createElement("div");
+        row.className = "letter-local";
+    
+        console.log(level[i]);
+        for (let j = 0; j < level[i].length; j++) {
+            let box = document.createElement("div");
+            box.className = "letter-box";
+            row.appendChild(box);
+        }
+    
+        board.appendChild(row);
+    }
 }
 
 document.getElementById("keyboard-cont").addEventListener("click", (e) => {

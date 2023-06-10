@@ -74,8 +74,8 @@ app.get('/test_levels.js', function(req, res){
 
 app.post('/generate_level', function(req, res) {
     const diff_to_range = {
-        "Easy": [0,200],
-        "Medium": [200,600],
+        "Easy": [50,150],
+        "Medium": [150,600],
         "Hard": [600,800],
         "Very Hard": [800,1000],
     }
