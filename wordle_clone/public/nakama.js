@@ -1,6 +1,8 @@
 import { Client } from "https://cdn.skypack.dev/@heroiclabs/nakama-js";
 import { v4 as uuid } from "https://cdn.skypack.dev/@lukeed/uuid";
 
+let connectedOpponents;
+
 class Nakama {
     constructor() {
         this.client
@@ -69,6 +71,27 @@ class Nakama {
           }
         };
       }
+
+    createPresenceNotification() {
+        this.socket.onmatchpresence = (presences) => {
+          // Remove all users who left.
+          connectedOpponents = connectedOpponents.filter(function(co) {
+            var stillConnectedOpponent = true;
+        
+            presences.leaves.forEach((leftOpponent) => {
+              if (leftOpponent.user_id == co.user_id) {
+                stillConnectedOpponent = false;
+              }
+            });
+        
+            return stillConnectedOpponent;
+          });
+        
+          // Add all users who joined.
+          connectedOpponents = connectedOpponents.concat(presences.joins);
+          toastr.success("Joined match!");
+        };
+    }
 }
 
 export default new Nakama()

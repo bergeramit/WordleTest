@@ -3,6 +3,7 @@ const express = require("express");
 const path = require('path');
 const bodyParser = require('body-parser');
 const guesser = require("./public/bot_guess_algo.js");
+const test_levels = require("./public/test_levels_server.js");
 const app = express(); // Initializing Express App
 
 
@@ -57,5 +58,32 @@ app.get('/nakama.js', function(req, res){
 app.get('/style.css', function(req, res){
     res.sendFile(__dirname + '/public/style.css');
 });
+
+// For Test Levels
+app.get('/test_levels.css', function(req, res){
+    res.sendFile(__dirname + '/public/test_levels.css');
+});
+
+app.get('/test_levels.html', function(req, res){
+    res.sendFile(__dirname + '/public/test_levels.html');
+});
+
+app.get('/test_levels.js', function(req, res){
+    res.sendFile(__dirname + '/public/test_levels.js');
+});
+
+app.post('/generate_level', function(req, res) {
+    const diff_to_range = {
+        "Easy": [0,200],
+        "Medium": [200,600],
+        "Hard": [600,800],
+        "Very Hard": [800,1000],
+    }
+    const difficulty = req.body.difficulty;
+    // console.log(difficulty);
+    board = test_levels.retrieve_level(diff_to_range[difficulty]);
+    console.log(board);
+    res.send(JSON.stringify(board));
+  });
 
 app.listen(3000, ()=> console.log("App Listening on port 3000"));
