@@ -59,7 +59,7 @@ function paint_current_level(current_level) {
       var letter_count = button.getElementsByClassName("letter-count")[0];
       if (letter_count){
         letter_count.textContent = "";
-        if (letters.includes(button.textContent)) {
+        if (letters.includes(button.textContent[0])) {
           button.classList.add('button-marked');
           button.style.color = "white";
           letter_count.textContent = countLetter(button.textContent, level[0]);
@@ -104,7 +104,7 @@ document.addEventListener("keyup", (e) => {
     console.log("rechecd inside letter");
     console.log(pressedKey);
     console.log(guess.textContent);
-    guess.textContent = guess.textContent + pressedKey.toLowerCase();
+    guess.textContent = guess.textContent + pressedKey.toLowerCase()[0];
   }
 });
 
