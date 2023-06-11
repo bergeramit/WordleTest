@@ -49,17 +49,32 @@ function paint_current_level(current_level) {
     })
 }
 
+function checkGuess(guess) {
+  //console.log("in CheckGuess");
+  for (let i = 0; i < level.length; i++) {
+    console.log("Checks: level[1][i]: "+level[i]+" == guess:"+guess);
+    if (level[i] == guess) {
+      console.log("Sucess! at row: " + i+1);
+      var row = document.getElementsByClassName("letter-local")[i];
+      for (let j = 0; j < row.children.length; j++) {
+        row.children[j].textContent = level[i][j];
+      }
+    }
+  }
+}
+
 document.addEventListener("keyup", (e) => {
   let pressedKey = String(e.key);
-  const guess = document.querySelectorAll('#input-guess');
+  const guess = document.getElementById('input-guess');
   console.log("reached here");
   if (pressedKey === "Backspace") {
-    guess.textContent = guess.textContent[guess.textContent.length - 2];
+    guess.textContent = guess.textContent.substring(0,guess.textContent.length - 1);
     return;
   }
 
   if (pressedKey === "Enter") {
-    checkGuess(is_local);
+    checkGuess(guess.textContent);
+    guess.textContent = "";
     return;
   }
 
@@ -67,7 +82,10 @@ document.addEventListener("keyup", (e) => {
   if (!found || found.length > 1) {
     return;
   } else {
-    guess.textContent = guess.textContent + pressedKey;
+    console.log("rechecd inside letter");
+    console.log(pressedKey);
+    console.log(guess.textContent);
+    guess.textContent = guess.textContent + pressedKey.toLowerCase();
   }
 });
 
