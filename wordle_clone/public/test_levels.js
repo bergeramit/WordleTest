@@ -4,6 +4,8 @@ var postURL = "http://64.226.100.123/generate_level/";
 var difficulty = "Medium";
 var level;
 
+toastr.options.timeOut = 1000;
+
 const buttons = document.querySelectorAll('.pagination a');
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
@@ -78,8 +80,11 @@ function checkGuess(guess) {
       for (let j = 0; j < row.children.length; j++) {
         row.children[j].textContent = level[i][j];
       }
+      return;
     }
   }
+
+  toastr.error("Wrong Guess!");
 }
 
 document.addEventListener("keyup", (e) => {
