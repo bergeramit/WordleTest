@@ -16,7 +16,8 @@ function getRandomArbitrary(min, max) {
     return 0;
   }
 
-fs.readFile("./public/levels_dataset.json", "utf8", (err, jsonString) => {
+//fs.readFile("./public/levels_dataset.json", "utf8", (err, jsonString) => {
+fs.readFile("./public/easy_levels_dataset.json", "utf8", (err, jsonString) => {
     if (err) {
     console.log("File read failed:", err);
     return;
@@ -30,9 +31,9 @@ fs.readFile("./public/levels_dataset.json", "utf8", (err, jsonString) => {
 function retrieve_level(difficulty) {
     const diff_to_range = {
         "Easy": [0, levels.length / 4],
-        "Medium": [levels.length / 4,levels.length / 2],
-        "Hard": [levels.length / 2, 3 * levels.length / 4],
-        "Very Hard": [3 * levels.length / 4, levels.length-1],
+        "Medium": [Math.floor(levels.length / 4),Math.floor(levels.length / 2)],
+        "Hard": [Math.floor(levels.length / 2), Math.floor(3 * levels.length / 4)],
+        "Very Hard": [Math.floor(3 * levels.length / 4), levels.length-1],
     }
     difficulty_range = diff_to_range[difficulty]
     console.log(difficulty_range);

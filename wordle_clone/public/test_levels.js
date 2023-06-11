@@ -1,6 +1,6 @@
 
-//var postURL = "http://64.226.100.123/bot/guess";
-var postURL = "http://127.0.0.1:3000/generate_level/";
+var postURL = "http://64.226.100.123/generate_level/";
+//var postURL = "http://127.0.0.1:3000/generate_level/";
 var difficulty = "Medium";
 var level;
 
