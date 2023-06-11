@@ -73,15 +73,10 @@ app.get('/test_levels.js', function(req, res){
 });
 
 app.post('/generate_level', function(req, res) {
-    const diff_to_range = {
-        "Easy": [50,150],
-        "Medium": [150,600],
-        "Hard": [600,800],
-        "Very Hard": [800,1000],
-    }
+    
     const difficulty = req.body.difficulty;
     // console.log(difficulty);
-    board = test_levels.retrieve_level(diff_to_range[difficulty]);
+    board = test_levels.retrieve_level(difficulty);
     console.log(board);
     res.send(JSON.stringify(board));
   });

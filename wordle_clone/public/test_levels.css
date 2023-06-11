@@ -22,8 +22,8 @@ h1 {
      margin: 2px;
      font-size: 2.5rem;
      font-weight: 700;
-     height: 1rem;
-     width: 1rem;
+     height: 2rem;
+     width: 1.5rem;
      display: flex;
      justify-content: center;
      align-items: center;
@@ -32,6 +32,11 @@ h1 {
    
    .filled-box {
      border: 2px solid black;
+   }
+
+   .button-marked {
+    background-color: #4CAF50;
+    color: white;
    }
    
    .letter-row-local {

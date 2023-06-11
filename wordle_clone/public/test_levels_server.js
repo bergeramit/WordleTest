@@ -3,7 +3,17 @@ const fs = require('fs');
 var levels;
 
 function getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max-min)) + min;
+  }
+
+  function compareFn(a, b) {
+    if (a[0] < b[0]) {
+      return -1;
+    }
+    if (a[0] > b[0]) {
+      return 1;
+    }
+    return 0;
   }
 
 fs.readFile("./public/levels_dataset.json", "utf8", (err, jsonString) => {
@@ -12,20 +22,28 @@ fs.readFile("./public/levels_dataset.json", "utf8", (err, jsonString) => {
     return;
     }
     levels = JSON.parse(jsonString);
-    //console.log(levels[0].word);
+    levels.sort(compareFn);
+    console.log(levels.length);
+    console.log(levels[levels.length-1]);
 });
 
-function retrieve_level(difficulty_range) {
+function retrieve_level(difficulty) {
+    const diff_to_range = {
+        "Easy": [0, levels.length / 4],
+        "Medium": [levels.length / 4,levels.length / 2],
+        "Hard": [levels.length / 2, 3 * levels.length / 4],
+        "Very Hard": [3 * levels.length / 4, levels.length-1],
+    }
+    difficulty_range = diff_to_range[difficulty]
     console.log(difficulty_range);
     var lower = difficulty_range[0];
     var upper = difficulty_range[1];
+    console.log(lower);
+    console.log(upper);
     var level_difficulty = getRandomArbitrary(lower, upper);
+    console.log(level_difficulty)
 
-    for(let i=0; i<levels.length;i++) {
-        if (levels[i][0] < level_difficulty + 50 && levels[i][0] > level_difficulty - 50) {
-            return levels[i][1];
-        }
-    }
+    return levels[level_difficulty][1];
 }
 
 module.exports.retrieve_level = retrieve_level;

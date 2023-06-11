@@ -20,7 +20,7 @@ const buttons = document.querySelectorAll('.pagination a');
 function paint_current_level(current_level) {
     level = current_level;
     letters = Array.from(level[0]);
-    console.log(level);
+    console.log(letters );
     let board = document.getElementById("game-board");
     board.innerHTML = "";
     
@@ -37,7 +37,39 @@ function paint_current_level(current_level) {
     
         board.appendChild(row);
     }
+
+    const buttons = document.querySelectorAll('.keyboard-button');
+    buttons.forEach((button) => {
+      button.classList.remove('button-marked');
+      button.style.color = "black";
+      if (letters.includes(button.textContent)) {
+        button.classList.add('button-marked');
+        button.style.color = "white";
+      }
+    })
 }
+
+document.addEventListener("keyup", (e) => {
+  let pressedKey = String(e.key);
+  const guess = document.querySelectorAll('#input-guess');
+  console.log("reached here");
+  if (pressedKey === "Backspace") {
+    guess.textContent = guess.textContent[guess.textContent.length - 2];
+    return;
+  }
+
+  if (pressedKey === "Enter") {
+    checkGuess(is_local);
+    return;
+  }
+
+  let found = pressedKey.match(/[a-z]/gi);
+  if (!found || found.length > 1) {
+    return;
+  } else {
+    guess.textContent = guess.textContent + pressedKey;
+  }
+});
 
 document.getElementById("keyboard-cont").addEventListener("click", (e) => {
     const target = e.target;
@@ -75,3 +107,24 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   
     document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
   });
+
+function setup_starting_level() {
+  fetch(postURL, {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true
+    }, 
+    body: JSON.stringify({"difficulty": difficulty})
+  }).then(response => {
+    console.log(response.statusText);
+    return response.json();
+  })
+  .then(data => {
+          console.log(data);
+          paint_current_level(data);
+      })
+}
+setup_starting_level();
