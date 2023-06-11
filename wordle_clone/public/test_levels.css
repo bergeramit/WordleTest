@@ -9,6 +9,10 @@ h1 {
      touch-action: manipulation;
      background-color: #ecf0f1;
    }
+
+   .letter-count {
+      font-size: 0.6rem;
+   }
    
    #game-board {
      display: flex;

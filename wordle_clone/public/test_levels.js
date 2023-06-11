@@ -17,6 +17,20 @@ const buttons = document.querySelectorAll('.pagination a');
       });
     });
 
+function countLetter(letter, str) {
+  var letterCount = 0;
+  var lowercaseLetter = letter.toLowerCase();
+  var lowercaseString = str.toLowerCase();
+
+  for (var i = 0; i < lowercaseString.length; i++) {
+    if (lowercaseString[i] === lowercaseLetter) {
+      letterCount++;
+    }
+  }
+    
+      return letterCount;
+    }
+
 function paint_current_level(current_level) {
     level = current_level;
     letters = Array.from(level[0]);
@@ -42,9 +56,14 @@ function paint_current_level(current_level) {
     buttons.forEach((button) => {
       button.classList.remove('button-marked');
       button.style.color = "black";
-      if (letters.includes(button.textContent)) {
-        button.classList.add('button-marked');
-        button.style.color = "white";
+      var letter_count = button.getElementsByClassName("letter-count")[0];
+      if (letter_count){
+        letter_count.textContent = "";
+        if (letters.includes(button.textContent)) {
+          button.classList.add('button-marked');
+          button.style.color = "white";
+          letter_count.textContent = countLetter(button.textContent, level[0]);
+        }
       }
     })
 }
